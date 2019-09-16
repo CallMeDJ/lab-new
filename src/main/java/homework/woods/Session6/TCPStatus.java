@@ -1,0 +1,7 @@
+package homework.woods.Session6;
+
+public enum TCPStatus {
+
+	CLOSED,LISTEN,SYS_SENT,SYS_RCVD,ESTABLISHED,FIN_WAIT_1,FIN_WAIT_2,TIME_WAIT,CLOSING,CLOSE_WAIT,LAST_ACK
+
+}

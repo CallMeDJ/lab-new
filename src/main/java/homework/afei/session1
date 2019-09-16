@@ -1,0 +1,124 @@
+package homework;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+public class MaiXGHomework {
+	int sumNum=50;
+	static int curNum=50;//当前还剩多少个瓜，每卖一个，都需要递减。
+	int leaveNum;//已经卖出的西瓜数。
+	MaiXiGuaPractice mxgp;  //这种类属性，不能够直接饮用类方法吗？
+	public static void main(String[] args) {
+		MaiXGHomework mgh=new MaiXGHomework();
+		List<Map<String, Integer>> listCust1=mgh.generator();
+		Random rand=new Random();
+		int x=rand.nextInt(listCust1.size());
+		String chgXingm="";
+		for(String key:listCust1.get(x).keySet()) {
+			chgXingm=key;
+		}
+		
+		Map<String, Integer> newMap=new HashMap<String, Integer>();
+		newMap.put(chgXingm, -1);
+		listCust1.set(x,newMap);
+		List list=mgh.sellXigua(listCust1);
+		mgh.leaveNum=mgh.sumNum-mgh.curNum;
+		System.out.println("xxx一共卖了多少个西瓜:"+mgh.leaveNum);
+		System.out.println("西瓜一共买个几个人:"+list.size());
+		System.out.println("卖出西瓜个数列表如下：");
+		for(int i=0;i<list.size();i++) {
+			if(i==0) {
+				System.out.print("["+list.get(i)+",");
+			}else {
+				if(i==list.size()-1) {
+					System.out.print(list.get(i)+"]");
+				}else {
+					System.out.print(list.get(i)+",");
+				}
+			}
+		}
+		
+	}
+	
+	public List sellXigua(List<Map<String,Integer>> custList) {
+		List returnList = new ArrayList();
+		for(int i=0;i<custList.size();i++) {
+			for(String key:custList.get(i).keySet()) {
+				try {
+					returnList.add(new MaiXGHomework().sell0(custList.get(i).get(key)));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return returnList;
+	}
+	
+		public int sell0(int x) throws Exception {
+			int sellNum=0;
+			try{
+				if(x<=0) {
+					throw new Exception("买瓜数量小于等于0，属于扯淡的客户，请离开！");
+				}else {
+					if(x<this.curNum) {
+						this.curNum=this.curNum-x;
+						sellNum=x;
+					}else {
+						this.curNum=0;
+						sellNum=this.curNum;
+					}
+				}
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}finally {
+				return sellNum;
+			}
+		}
+		
+		public List<Map<String, Integer>> generator() {
+			List<Map<String, Integer>> listCust=new ArrayList<Map<String, Integer>>();
+			Map<String, Integer> custMapInfo=new HashMap<String,Integer>();
+			Random rand=new Random();
+			int custNum=rand.nextInt(10)+5;//随机生成5到15个人。
+			for(int i=0;i<custNum;i++) {
+				listCust.add(new MaiXGHomework().generCust());
+			}
+			return listCust;
+		}
+		
+		public Map<String,Integer> generCust(){
+			Map<String,Integer> custMap=new HashMap<String,Integer>();
+			List<String> xing=new ArrayList<String>();
+			xing.add("赵");
+			xing.add("钱");
+			xing.add("孙");
+			xing.add("李");
+			xing.add("周");
+			xing.add("吴");
+			xing.add("郑");
+			xing.add("王");
+			xing.add("杜");
+			List<String> ming=new ArrayList<String>();
+			ming.add("飞");
+			ming.add("东");
+			ming.add("俊");
+			ming.add("旭");
+			ming.add("瑾");
+			ming.add("原");
+			ming.add("亮");
+			ming.add("静");
+			ming.add("涛");
+			Random rand=new Random();
+			String xingm;
+			Integer buyNum;
+			int x=rand.nextInt(xing.size()-1)+1;
+			xingm=xing.get(x)+ming.get(x);
+			buyNum=x;
+			custMap.put(xingm, buyNum);
+			return custMap;
+		}
+}
